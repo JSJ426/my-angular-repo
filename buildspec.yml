@@ -1,4 +1,5 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
@@ -7,16 +8,20 @@ phases:
       - npm install -g @angular/cli@17
   pre_build:
     commands:
-      - npm install
+      - npm ci
   build:
     commands:
       - ng build -c production
       - echo "Build completed."
-    finally:
-      - echo This is the finally block execution!
+  post_build:
+    commands:
+      - ls -al
+      - ls -al dist
+      - ls -al dist/my-angular-project
+
 artifacts:
-  base-directory: dist/my-angular-project
   files:
     - 'dist/my-angular-project/**/*'
-    - appspec.yml
-    - 'deploy-scripts/**/*'
+    - './appspec.yml'
+    # 아래 파일이 레포에 실제로 있을 때만 유지
+    - application-start-hook.sh
