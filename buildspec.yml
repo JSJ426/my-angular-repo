@@ -15,12 +15,19 @@ phases:
     commands:
       - sed -i 's/\r$//' application-start-hook.sh
       - chmod +x application-start-hook.sh
-      - ls -al application-start-hook.sh
-      - ls -al dist || true
+
+      # 배포용 폴더 만들고 dist 결과물을 루트로 복사
+      - mkdir -p deploy
+      - cp -r dist/my-angular-project/* deploy/
+
+      # appspec/hook도 deploy로 같이 넣기 (필요하면)
+      - cp appspec.yml deploy/
+      - cp application-start-hook.sh deploy/
+
+      - ls -al deploy
 
 artifacts:
+  base-directory: deploy
   files:
-    - appspec.yml
-    - application-start-hook.sh
-    - dist/**/*
+    - '**/*'
   discard-paths: no
