@@ -13,7 +13,7 @@ phases:
 
   post_build:
     commands:
-      # hook 스크립트 실행권한 보장 (매우 중요)
+      - sed -i 's/\r$//' application-start-hook.sh
       - chmod +x application-start-hook.sh
       - ls -al application-start-hook.sh
       - ls -al dist || true
